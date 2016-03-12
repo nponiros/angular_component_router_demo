@@ -1,0 +1,75 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  width: 100%;
+  text-align: center;
+}
+
+nav {
+  text-align: center;
+}
+
+nav ul li {
+  display: inline-block;
+  border: 1px black solid;
+  border-radius: 25px;
+  line-height: 30px;
+  width: 20%;
+  cursor: pointer;
+}
+
+main {
+  width: 100%;
+  margin: 2%;
+}
+
+aside {
+  width: 30%;
+  float: left;
+  border: 1px black solid;
+  border-radius: 25px;
+  margin-right: 2%;
+  text-align: center;
+}
+
+aside ul li {
+  list-style: none;
+  text-align: left;
+  font-size: 18px;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+todo-list {
+  width: 64%;
+  float: left;
+  border: 1px black solid;
+  border-radius: 25px;
+  text-align: left;
+  line-height: 30px;
+}
+
+todo-list ul li {
+  list-style: none;
+}
+
+shopping-list {
+  width: 96%;
+  border: 1px black solid;
+  border-radius: 25px;
+  display: block;
+  text-align: center;
+}
+
+shopping-list ul li {
+  list-style: none;
+  text-align: left;
+  line-height: 30px;
+}
+
+.no-todos {
+  text-align: center;
+}
