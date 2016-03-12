@@ -50,15 +50,15 @@
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	var _home = __webpack_require__(26);
+	var _home = __webpack_require__(28);
 	
 	var _home2 = _interopRequireDefault(_home);
 	
-	var _todo_lists = __webpack_require__(27);
+	var _todo_lists = __webpack_require__(29);
 	
 	var _todo_lists2 = _interopRequireDefault(_todo_lists);
 	
-	var _shopping_list = __webpack_require__(29);
+	var _shopping_list = __webpack_require__(30);
 	
 	var _shopping_list2 = _interopRequireDefault(_shopping_list);
 	
@@ -95,7 +95,7 @@
 	
 	var component = {
 	  template: '\n    <header><h1>Angular 1.5.x Component Router Demo</h1>\n    <nav>\n      <ul>\n        <li ng-link="[\'Home\']">Home</li>\n        <li ng-link="[\'ShoppingList\']">Shopping List</li>\n        <li ng-link="[\'TodoLists\']">Todo Lists</li>\n      </ul>\n    </nav>\n    </header>\n    <main>\n      <ng-outlet></ng-outlet>\n    </main>\n  ',
-	  $routeConfig: [{ path: '/', name: 'Home', component: 'home', useAsDefault: true }, { path: '/shopping-list', name: 'ShoppingList', component: _shopping_list.name }, { path: '/todo-lists', name: 'TodoLists', component: _todo_lists.name }],
+	  $routeConfig: [{ path: '/', name: 'Home', component: 'home', useAsDefault: true }, { path: '/shopping-list', name: 'ShoppingList', component: _shopping_list.name }, { path: '/todo-lists/...', name: 'TodoLists', component: _todo_lists.name }],
 	  controller: Main
 	};
 	
@@ -509,6 +509,10 @@
 	
 	var _todo_listsService = __webpack_require__(25);
 	
+	var _todo_list = __webpack_require__(26);
+	
+	var _select_list = __webpack_require__(27);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var TodoLists = function () {
@@ -517,18 +521,12 @@
 	
 	    this.listsService = listsService;
 	    this.lists = [];
-	    this.activeTodoList = [];
 	  }
 	
 	  (0, _createClass3.default)(TodoLists, [{
 	    key: '$onInit',
 	    value: function $onInit() {
 	      this.lists = this.listsService.lists;
-	    }
-	  }, {
-	    key: 'selectTodoList',
-	    value: function selectTodoList(id) {
-	      this.activeTodoList = this.listsService.getTodoList(id);
 	    }
 	  }]);
 	  return TodoLists;
@@ -537,8 +535,9 @@
 	TodoLists.$inject = [_todo_listsService.name];
 	
 	var component = {
-	  template: '\n    <aside>\n      <h2>Lists</h2>\n      <ul>\n        <li ng-repeat="list in $ctrl.lists" ng-click="$ctrl.selectTodoList(list.id)">\n          {{list.name}}\n        </li>\n      </ul>\n    </aside>\n    <todo-list todos="$ctrl.activeTodoList"></todo-list>\n  ',
-	  controller: TodoLists
+	  template: '\n    <aside>\n      <h2>Lists</h2>\n      <ul>\n        <li ng-repeat="list in $ctrl.lists" ng-link="[\'TodoList\', {id: list.id}]">\n          {{list.name}}\n        </li>\n      </ul>\n    </aside>\n    <ng-outlet></ng-outlet>\n  ',
+	  controller: TodoLists,
+	  $routeConfig: [{ path: '/', name: 'Select', component: _select_list.name, useAsDefault: true }, { path: '/:id', name: 'TodoList', component: _todo_list.name }]
 	};
 	
 	exports.default = component;
@@ -592,6 +591,75 @@
 
 /***/ },
 /* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.name = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(2);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(4);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _todo_lists = __webpack_require__(25);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var TodoList = function () {
+	  function TodoList(listsService) {
+	    (0, _classCallCheck3.default)(this, TodoList);
+	
+	    this.listsService = listsService;
+	  }
+	
+	  (0, _createClass3.default)(TodoList, [{
+	    key: '$routerOnActivate',
+	    value: function $routerOnActivate(next) {
+	      var id = Number(next.params.id);
+	      this.todos = this.listsService.getTodoList(id);
+	    }
+	  }]);
+	  return TodoList;
+	}();
+	
+	TodoList.$inject = [_todo_lists.name];
+	
+	var component = {
+	  template: '\n    <div ng-if="$ctrl.todos.length != 0">\n      <ul>\n        <li ng-repeat="todo in $ctrl.todos">{{todo}}</li>\n      </ul>\n    </div>\n  ',
+	  bindings: {
+	    $router: '<'
+	  },
+	  controller: TodoList
+	};
+	
+	exports.default = component;
+	var name = exports.name = 'todoList';
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var component = {
+	  template: '\n    <div class="no-todos">\n      Please select a list\n    </div>\n  '
+	};
+	
+	exports.default = component;
+	var name = exports.name = 'selectList';
+
+/***/ },
+/* 28 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -607,7 +675,7 @@
 	var name = exports.name = 'home';
 
 /***/ },
-/* 27 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -620,9 +688,13 @@
 	
 	var _todo_lists2 = _interopRequireDefault(_todo_lists);
 	
-	var _todo_list = __webpack_require__(28);
+	var _todo_list = __webpack_require__(26);
 	
 	var _todo_list2 = _interopRequireDefault(_todo_list);
+	
+	var _select_list = __webpack_require__(27);
+	
+	var _select_list2 = _interopRequireDefault(_select_list);
 	
 	var _todo_lists3 = __webpack_require__(25);
 	
@@ -632,31 +704,12 @@
 	
 	var moduleName = 'app.todoLists';
 	
-	angular.module(moduleName, []).service(_todo_lists3.name, _todo_lists4.default).component(_todo_lists.name, _todo_lists2.default).component(_todo_list.name, _todo_list2.default);
+	angular.module(moduleName, []).service(_todo_lists3.name, _todo_lists4.default).component(_todo_lists.name, _todo_lists2.default).component(_todo_list.name, _todo_list2.default).component(_select_list.name, _select_list2.default);
 	
 	exports.default = moduleName;
 
 /***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var component = {
-	  template: '\n    <div ng-if="$ctrl.todos.length != 0">\n      <ul>\n        <li ng-repeat="todo in $ctrl.todos">{{todo}}</li>\n      </ul>\n    </div>\n    <div class="no-todos" ng-if="$ctrl.todos.length == 0">\n      Please select a list\n    </div>',
-	  bindings: {
-	    todos: '<'
-	  }
-	};
-	
-	exports.default = component;
-	var name = exports.name = 'todoList';
-
-/***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

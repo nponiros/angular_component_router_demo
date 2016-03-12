@@ -1,18 +1,15 @@
 import {name as listsServiceName} from './todo_lists.service.js';
+import {name as todoListComponentName} from './todo_list.component';
+import {name as selectListComponentName} from './select_list.component';
 
 class TodoLists {
   constructor(listsService) {
     this.listsService = listsService;
     this.lists = [];
-    this.activeTodoList = [];
   }
 
   $onInit() {
     this.lists = this.listsService.lists;
-  }
-
-  selectTodoList(id) {
-    this.activeTodoList = this.listsService.getTodoList(id);
   }
 }
 
@@ -23,14 +20,18 @@ const component = {
     <aside>
       <h2>Lists</h2>
       <ul>
-        <li ng-repeat="list in $ctrl.lists" ng-click="$ctrl.selectTodoList(list.id)">
+        <li ng-repeat="list in $ctrl.lists" ng-link="['TodoList', {id: list.id}]">
           {{list.name}}
         </li>
       </ul>
     </aside>
-    <todo-list todos="$ctrl.activeTodoList"></todo-list>
+    <ng-outlet></ng-outlet>
   `,
-  controller: TodoLists
+  controller: TodoLists,
+  $routeConfig: [
+    {path: '/', name: 'Select', component: selectListComponentName, useAsDefault: true},
+    {path: '/:id', name: 'TodoList', component: todoListComponentName}
+  ]
 };
 
 export default component;

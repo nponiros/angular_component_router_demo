@@ -52,6 +52,14 @@ todo-list {
   line-height: 30px;
 }
 
+select-list {
+  width: 64%;
+  float: left;
+  border: 1px black solid;
+  border-radius: 25px;
+  line-height: 30px;
+}
+
 todo-list ul li {
   list-style: none;
 }

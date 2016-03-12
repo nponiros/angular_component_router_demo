@@ -21,7 +21,7 @@ const component = {
   $routeConfig:[
     {path: '/', name: 'Home', component: 'home', useAsDefault: true},
     {path: '/shopping-list', name: 'ShoppingList', component: shoppingListName},
-    {path: '/todo-lists', name: 'TodoLists', component: todoListsName}
+    {path: '/todo-lists/...', name: 'TodoLists', component: todoListsName}
   ],
   controller: Main
 };
